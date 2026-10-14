@@ -1,0 +1,80 @@
+name: CI Verification
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Verify Toolchain
+        run: |
+          g++ --version
+          make --version
+          python3 --version
+          git --version
+
+      - name: Test Phase 1 (Clean Compiler & Test Suite)
+        run: |
+          cd 01_phase1_clean_compiler
+          make test
+
+      - name: Test Phase 2 (Target Marker Injection)
+        run: |
+          cd 02_phase2_marker_injection
+          make all
+          chmod +x check_injection.sh
+          ./check_injection.sh
+
+      - name: Test Phase 3 (C++ Quine Exact Fixed-Point)
+        run: |
+          cd 03_phase3_quine
+          g++ -std=c++17 quine.cpp -o quine
+          ./quine | diff -u - quine.cpp
+          echo "Quine reproduction verified byte-identical."
+
+      - name: Test Phase 4 (Full Self-Replication Cycle)
+        run: |
+          cd 04_phase4_self_replication
+          cd infected_build && make all && cd ..
+          chmod +x demonstrate_attack.sh
+          ./demonstrate_attack.sh
+
+      - name: Test Phase 5 (Diverse Double-Compiling Defense)
+        run: |
+          cd 05_phase5_ddc_defense
+          cd infected_build && make all && cd ..
+          chmod +x ddc_verify.sh
+          echo "Running DDC Clean Baseline..."
+          ./ddc_verify.sh --clean-only
+          echo "Running DDC Alert Mode (expects divergence detection)..."
+          if ./ddc_verify.sh; then
+            echo "Expected divergence detection alert!"
+            exit 1
+          else
+            echo "DDC successfully detected compiler tampering (exit code 1)."
+          fi
+
+      - name: Test Phase 6 (Detection Matrix & Behavioral Tooling)
+        run: |
+          cd 06_phase6_extensions
+          # Build variant compilers for matrix testing
+          (cd variants/plain && make all)
+          (cd variants/obfuscated && make all)
+          (cd variants/multitarget && make all)
+          (cd variants/evasive && make all)
+          cd tools
+          python3 run_detection_matrix.py

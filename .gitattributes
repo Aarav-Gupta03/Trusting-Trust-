@@ -1,0 +1,35 @@
+# ==============================================================================
+# Trusting Trust Project — Git Attributes
+# ==============================================================================
+
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Shell scripts must always use LF endings to run on POSIX / Linux / WSL / CI
+*.sh text eol=lf
+
+# C / C++ Source & Header files
+*.cpp text
+*.hpp text
+*.h text
+*.c text
+
+# Build files & configuration
+Makefile text
+*.mk text
+*.py text
+*.md text
+*.json text
+*.csv text
+*.yml text
+*.yaml text
+*.txt text
+
+# Binary documents & presentation assets
+*.pdf binary
+*.pptx binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary

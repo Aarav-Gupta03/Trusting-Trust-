@@ -1,0 +1,84 @@
+# ==============================================================================
+# Trusting Trust Project — Git Ignore Rules
+# ==============================================================================
+
+# Compiled Object files
+*.o
+*.obj
+*.ko
+*.so
+*.so.*
+*.dylib
+*.dll
+*.a
+*.lib
+
+# Executables & Binary Outputs
+tlc
+tlc.exe
+quine
+quine.exe
+test_runner
+test_runner.exe
+compiler_A
+compiler_B
+*.out
+*.exe
+a.out
+
+# Debug & Symbol files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Generated intermediate files from test suites & benchmarks
+out*.cpp
+output.cpp
+*_generated.cpp
+tests/*_generated.cpp
+final_A.cpp
+final_B.cpp
+regenerated/
+repo_regenerated/
+compiler_B_source/
+
+# Python Cache & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editor & IDE artifacts
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+.vs/
+*.user
+*.suo
+
+# Operating System specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# Temporary files & Scratch directories
+tmp/
+temp/
+scratch/
+*.tmp
